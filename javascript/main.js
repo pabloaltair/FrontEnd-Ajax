@@ -1,22 +1,21 @@
-// Función para registrar un usuario mediante AJAX con validación de campos y duplicados
+// Función para registrar un club mediante AJAX con validación de campos y duplicados
 $(document).ready(function() {
   // Maneja el evento submit del formulario
   $('#registerForm').on('submit', function(event) {
       event.preventDefault();  // Previene el envío tradicional del formulario
-      registerUser();  // Llama a la función de registro
+      registerClub();  // Llama a la función de registro
   });
 });
 
-// Función para registrar un usuario mediante AJAX
-// Función para registrar un usuario mediante AJAX
-function registerUser() {
-    const username = $('#registerUsername').val().trim();
+// Función para registrar un club mediante AJAX
+function registerClub() {
+    const clubUsername = $('#registerClubUsername').val().trim();
     const email = $('#registerEmail').val().trim();
     const password = $('#registerPassword').val().trim();
     const confirmPassword = $('#registerConfirmPassword').val().trim();
 
     // Validación de campos vacíos
-    if (!username || !email || !password || !confirmPassword) {
+    if (!clubUsername || !email || !password || !confirmPassword) {
         $('#result').text('Por favor, complete todos los campos.');
         return;
     }
@@ -34,24 +33,24 @@ function registerUser() {
         return;
     }
 
-    // Comprobar usuario y correo electrónico duplicados
+    // Comprobar nombre club y correo electrónico duplicados
     $.ajax({
-        url: 'http://localhost:3000/users',
+        url: 'http://localhost:3000/clubs',
         type: 'GET',
-        success: function(users) {
-            const userExists = users.some(u => u.username === username || u.email === email);
+        success: function(clubs) {
+            const clubExists = clubs.some(c => c.clubUsername === clubUsername || c.email === email);
 
-            if (userExists) {
-                $('#result').text('El nombre de usuario o correo electrónico ya están registrados. Por favor, elija otros.').css('color', 'red');
+            if (clubExists) {
+                $('#result').text('El nombre de club o correo electrónico ya están registrados. Por favor, elija otros.').css('color', 'red');
             } else {
-                // Registrar nuevo usuario si no hay duplicados
+                // Registrar nuevo club si no hay duplicados
                 $.ajax({
-                    url: 'http://localhost:3000/users',
+                    url: 'http://localhost:3000/clubs',
                     type: 'POST',
                     contentType: 'application/json',
-                    data: JSON.stringify({ username, email, password }),
+                    data: JSON.stringify({ clubUsername, email, password }),
                     success: function(response) {
-                        $('#result').text('Usuario registrado exitosamente. ID: ' + response.id).css('color', 'green');
+                        $('#result').text('Club registrado exitosamente. ID: ' + response.id).css('color', 'green');
                         $('#registerForm')[0].reset();
                     },
                     error: function(error) {
@@ -61,7 +60,7 @@ function registerUser() {
             }
         },
         error: function(error) {
-            $('#result').text('Error al verificar el usuario.').css('color', 'red');
+            $('#result').text('Error al verificar el club.').css('color', 'red');
         }
     });
 }
@@ -71,13 +70,13 @@ $(document).ready(function() {
   // Asignar evento de submit para el formulario de inicio de sesión
   $('#loginForm').on('submit', function(event) {
       event.preventDefault(); // Previene el envío del formulario
-      loginUser(); // Llama a la función de inicio de sesión
+      loginClub(); // Llama a la función de inicio de sesión
   });
 });
 
 // Función de inicio de sesión mediante AJAX
-function loginUser() {
-  const identifier = $('#loginUsername').val().trim();
+function loginClub() {
+  const identifier = $('#loginClubUsername').val().trim();
   const password = $('#loginPassword').val().trim();
 
   if (!identifier || !password) {
@@ -86,17 +85,17 @@ function loginUser() {
   }
 
   $.ajax({
-      url: 'http://localhost:3000/users',
+      url: 'http://localhost:3000/clubs',
       type: 'GET',
-      success: function(users) {
-          // Busca el usuario en la lista de usuarios
-          const user = users.find(u => (u.username === identifier || u.email === identifier) && u.password === password);
+      success: function(clubs) {
+          // Busca el club en la lista de clubes
+          const club = clubs.find(c => (c.clubUsername === identifier || c.email === identifier) && c.password === password);
 
-          if (user) {
-              $('#result').text(`Inicio de sesión exitoso. Bienvenido, ${user.username}!`).css('color', 'green');
+          if (club) {
+              $('#result').text(`Inicio de sesión exitoso. Bienvenido, ${club.clubUsername}!`).css('color', 'green');
               $('#loginForm')[0].reset();
           } else {
-              $('#result').text('Nombre de usuario/correo o contraseña incorrectos.');
+              $('#result').text('Nombre de club/correo o contraseña incorrectos.');
           }
       },
       error: function(error) {
@@ -107,17 +106,16 @@ function loginUser() {
 }
 
 $(document).ready(function() {
-  // Asignar evento de submit para el formulario de eliminación de usuario
+  // Asignar evento de submit para el formulario de eliminación de club
   $('#deleteForm').on('submit', function(event) {
       event.preventDefault();  // Previene el envío tradicional del formulario
-      deleteUser();  // Llama a la función de eliminación de usuario
+      deleteClub();  // Llama a la función de eliminación de club
   });
 });
 
-// Función para eliminar un usuario con confirmación
-// Función para eliminar un usuario con confirmación
-function deleteUser() {
-    const identifier = $('#deleteUsername').val().trim();
+// Función para eliminar un club con confirmación
+function deleteClub() {
+    const identifier = $('#deleteClubUsername').val().trim();
     const password = $('#deletePassword').val().trim();
   
     if (!identifier || !password) {
@@ -126,41 +124,41 @@ function deleteUser() {
     }
   
     $.ajax({
-        url: 'http://localhost:3000/users',
+        url: 'http://localhost:3000/clubs',
         type: 'GET',
-        success: function(users) {
-            // Busca el usuario que coincida con el nombre de usuario/correo y la contraseña
-            const user = users.find(u => (u.username === identifier || u.email === identifier) && u.password === password);
+        success: function(clubs) {
+            // Busca el club que coincida con el nombre de club/correo y la contraseña
+            const club = clubs.find(c => (c.clubUsername === identifier || c.email === identifier) && c.password === password);
   
-            if (user) {
+            if (club) {
                 // Mostrar un mensaje de confirmación con prompt
-                const confirmation = prompt(`Para confirmar la baja, escriba: ${user.username}BORRAME`);
+                const confirmation = prompt(`Para confirmar la baja, escriba: ${club.clubUsername}BORRAME`);
                 
-                // Verificar que el usuario haya ingresado correctamente la confirmación
-                if (confirmation === `${user.username}BORRAME`) {
-                    // Si se confirma, realizar la eliminación del usuario
+                // Verificar que el club haya ingresado correctamente la confirmación
+                if (confirmation === `${club.clubUsername}BORRAME`) {
+                    // Si se confirma, realizar la eliminación del club
                     $.ajax({
-                        url: `http://localhost:3000/users/${user.id}`,
+                        url: `http://localhost:3000/clubs/${club.id}`,
                         type: 'DELETE',
                         success: function() {
-                            $('#result').text('Usuario eliminado exitosamente.').css('color', 'green');
+                            $('#result').text('Club eliminado exitosamente.').css('color', 'green');
                             $('#deleteForm')[0].reset();
                         },
                         error: function(error) {
-                            console.error('Error al eliminar el usuario:', error);
-                            $('#result').text('Error al eliminar el usuario.');
+                            console.error('Error al eliminar el club:', error);
+                            $('#result').text('Error al eliminar el club.');
                         }
                     });
                 } else {
                     $('#result').text('Confirmación incorrecta. La eliminación fue cancelada.');
                 }
             } else {
-                $('#result').text('Nombre de usuario/correo o contraseña incorrectos.');
+                $('#result').text('Nombre de club/correo o contraseña incorrectos.');
             }
         },
         error: function(error) {
-            console.error('Error al intentar eliminar el usuario:', error);
-            $('#result').text('Error al intentar eliminar el usuario.');
+            console.error('Error al intentar eliminar el club:', error);
+            $('#result').text('Error al intentar eliminar el club.');
         }
     });
   }
