@@ -1,0 +1,34 @@
+{
+  "users": [
+    {
+      "id": "1",
+      "username": "usuarioEjemplo",
+      "email": "usuario@ejemplo.com",
+      "password": "123456"
+    },
+    {
+      "id": "56c5",
+      "username": "papaio",
+      "email": "papaio@gmail.com",
+      "password": "Papa123*"
+    },
+    {
+      "id": "c218",
+      "username": "papasensu",
+      "email": "papajsensu@gmail.com",
+      "password": "Papa123*"
+    },
+    {
+      "id": "6f72",
+      "username": "usuario",
+      "email": "usuario@gmail.com",
+      "password": "Usuario12"
+    },
+    {
+      "id": "a330",
+      "username": "a",
+      "email": "a@gmail.com",
+      "password": "a"
+    }
+  ]
+}

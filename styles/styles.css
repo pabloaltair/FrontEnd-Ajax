@@ -1,0 +1,24 @@
+body {
+    font-family: Arial, sans-serif;
+    background-image:url("../resources/imagenfondo.jpg");
+    background-size: cover;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+  }
+  
+  .container {
+    background-color: rgba(255, 255, 255, 0.8);
+    padding: 20px;
+    border-radius: 10px;
+    text-align: center;
+    margin-bottom: 50px;
+    
+  }
+  input {
+    border-radius: 5px; /* Ajusta el valor para cambiar el radio de las esquinas */
+  }
+  input:not(:first-child) {
+    margin-top: 10px;
+  }
